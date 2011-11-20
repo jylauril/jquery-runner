@@ -200,6 +200,16 @@ $('#runner').runner({
 
 * Report issues, questions, feature requests on [GitHub Issues](https://github.com/jylauril/jquery-runner/issues)
 
+
+## Licence
+
+#### Dual licensed under the MIT and GPL licenses:
+
+*   <http://www.opensource.org/licenses/mit-license.php>
+
+*   <http://www.gnu.org/licenses/gpl.html>
+
+
 ## Author
 
 [Jyrki Laurila](https://github.com/jylauril)
