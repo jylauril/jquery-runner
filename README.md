@@ -49,7 +49,7 @@ $('#runner').runner();
 
 
 
-`start` - Start the runner. If runner is not already initialized, it will first initialize and then start itself.
+`start` - Start the runner. If runner is not already initialized, it will first initialize and then start itself. Fires `runnerStarted` event.
 
 ```javascript
 $('#runner').runner('start');
@@ -57,7 +57,7 @@ $('#runner').runner('start');
 
 
 
-`stop` - Stop the runner.
+`stop` - Stop the runner. Fires `runnerStopped` event.
 
 ```javascript
 $('#runner').runner('stop');
@@ -65,7 +65,7 @@ $('#runner').runner('stop');
 
 
 
-`lap` - Take a lap time ("snapshot" of the current time) and return it as a formatted string.
+`lap` - Take a lap time ("snapshot" of the current time) and return it as a formatted string. Fires `runnerLap` event.
 
 ```javascript
 alert("Current lap time: " + $('#runner').runner('lap'));
@@ -119,10 +119,14 @@ You can alter the behavior by passing options object to the initialization.
 
 ## Events
 
-There are currently 3 events that gets fired:
+#### There are currently 3 events that gets fired:
+
 * `runnerStarted` - This event gets fired when the `start` method is invoked.
+
 * `runnerStopped` - This event gets fired when the `stop` method is invoked. Note that this event is also fired when the runner reaches the `stopAt` value.
+
 * `runnerLap` - This event gets fired when the `lap` method is invoked.
+
 
 Each of these events will pass the result of the `info` method as an argument in the event call. See examples for usage.
 
