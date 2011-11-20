@@ -118,7 +118,7 @@ $('#runner').runner({
     interval: 1000
 });
 ```
-_Note that the `interval` option is only set to demonstrate the possibility to change this value. In this example, it is not really needed to alter the interval, however, if you have dozens of runners like this on one page, it might be wise to make the update interval a bit slower so that it won't eat up all the CPU._
+*Note that the `interval` option is only set to demonstrate the possibility to change this value. In this example, it is not really needed to alter the interval, however, if you have dozens of runners like this on one page, it might be wise to make the update interval a bit slower so that it won't eat up all the CPU.*
 
 Initialize a normal count up runner with a custom formatter function that displays the time in minutes (with decimals):
 ```javascript
@@ -129,12 +129,26 @@ $('#runner').runner({
 });
 ```
 
+Initialize a count down runner that starts from 12 minutes and stops at 0, and alerts when the runner finishes:
+```javascript
+$('#runner').runner({
+    countdown: true,
+    startAt: 12 * 60 * 1000,
+    stopAt: 0
+}).bind('runnerStopped', function(ev, info) {
+    // check if we have reached the finish, or if the runner was just paused
+    if (info.time == 0) {
+        alert('The eggs are now hard-boiled!');
+    }
+});
+```
+
 ## Changelog
 
 ## Development
 
-- Source hosted at {GitHub}[https://github.com/jylauril/jquery-runner]
-- Report issues, questions, feature requests on {GitHub Issues}[https://github.com/jylauril/jquery-runner/issues]
+* Source hosted at {GitHub}[https://github.com/jylauril/jquery-runner]
+* Report issues, questions, feature requests on {GitHub Issues}[https://github.com/jylauril/jquery-runner/issues]
 
 == Author
 
