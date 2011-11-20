@@ -1,7 +1,7 @@
 /**
  * jQuery Runner Plugin v1.0
  *
- * http://
+ * https://github.com/jylauril/jquery-runner
  *
  * Copyright (c) 2011 Jyrki Laurila
  *
@@ -12,49 +12,55 @@
 
 ;(function($) {
     var steps = [3600000, 60000, 1000, 10],
-        sep = [':', ':', '.', ''],
-        up = false,
+        separator = ['', ':', ':', '.'],
+        updating = false,
         settings = {
             autostart: false,
             interval: 20,
             countdown: false,
             stopAt: null,
             startAt: 0,
+            milliseconds: true,
             format: null
         };
     
-    function pad(n) {
-        return (n < 10 ? '0' : '') + n;
+    function pad(num) {
+        return (num < 10 ? '0' : '') + num;
     }
     
-    function formatTime(val) {
+    function formatTime(val, ms) {
         var i = 0,
             v = 0,
-            l = steps.length,
-            s, str = '', p = '';
+            len = steps.length,
+            step, output = '', prefix = '';
         if (val < 0) {
             val = Math.abs(val);
-            p = '-';
+            prefix = '-';
         }
-        for (; i < l; i++, v = 0) {
-            s = steps[i];
-            if (val >= s) {
-                v = Math.floor(val / s);
-                val -= v * s;
+        for (; i < len; i++, v = 0) {
+            step = steps[i];
+            if (val >= step) {
+                v = Math.floor(val / step);
+                val -= v * step;
             }
-            if (v || i > 1 || str) str += pad(v) + sep[i];
+
+            if ((v || i > 1 || output) && (i != len-1 || ms)) {
+                output += (output ? separator[i] : '') + pad(v);
+            }
         }
-        return p + str;
+        return prefix + output;
     }
     
     function format(d, val) {
-        var f = d.settings.format;
-        return typeof f == 'function' ? f(val, formatTime) : formatTime(val);
+        var set = d.settings,
+            func = set.format,
+            ms = set.milliseconds;
+        return typeof f == 'function' ? f(val, formatTime, ms) : formatTime(val, ms);
     }
 
     function updateTime(t) {
-        if (!up) {
-            up = true;
+        if (!updating) {
+            updating = true;
             var d = data(t),
                 set = d.settings,
                 n = $.now(),
@@ -69,15 +75,15 @@
                 methods.stop(t);
             }
             setVal(t, d.total);
-            up = false;
+            updating = false;
         }
     }
     
-    function setVal(c, val) {
-        var d = data(c);
-        c.each(function(t, e) {
-            t = $(e);
-            t[(t.is('input') ? 'val' : 'text')](format(d, val));
+    function setVal(t, val) {
+        var d = data(t);
+        t.each(function(item, element) {
+            item = $(element);
+            item[(item.is('input') ? 'val' : 'text')](format(d, val));
         });
     }
     
@@ -90,7 +96,7 @@
     }
     
     var methods = {
-        init: function(options) {
+        init: function(options, start) {
             var o = data(this) || {},
                 d = {
                     total: 0,
@@ -102,13 +108,14 @@
                 
             this.data('runner', d);
             if (!d.startTime) setVal(this, d.settings.startAt);
-            if (d.settings.autostart) methods.start(this);
+            if (start || d.settings.autostart) methods.start(this);
             
             return this;
         },
         start: function(t) {
             t = t || this;
             var d = data(t);
+            if (!d) return methods.init({}, true);
             if (!d.running) {
                 d.running = true;
                 if (!d.startTime) methods.reset(t);
@@ -159,14 +166,14 @@
         info: function(t) {
             t = t || this;
             var d = data(t),
-                l = d.lastLap || 0;
+                lap = d.lastLap || 0;
             return {
                 running: d.running,
                 time: d.total,
                 formattedTime: format(d, d.total),
                 startTime: d.startTime,
-                lapTime: l,
-                formattedLapTime: format(d, l),
+                lapTime: lap,
+                formattedLapTime: format(d, lap),
                 settings: d.settings
             }
         }
