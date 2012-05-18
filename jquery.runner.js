@@ -55,7 +55,7 @@
         var set = d.settings,
             func = set.format,
             ms = set.milliseconds;
-        return typeof f == 'function' ? f(val, formatTime, ms) : formatTime(val, ms);
+        return typeof func == 'function' ? func(val, formatTime, ms) : formatTime(val, ms);
     }
 
     function updateTime(t) {
