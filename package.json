@@ -1,0 +1,60 @@
+{
+  "name": "jquery.runner",
+  "title": "jQuery-runner",
+  "version": "2.0.0",
+  "description": "A simple runner/stopwatch jQuery plugin for counting time up and down.",
+  "homepage": "https://github.com/jylauril/jquery-runner",
+  "main": "build/jquery.runner.js",
+  "scripts": {
+    "build": "grunt release"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jylauril/jquery-runner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jylauril/jquery-runner/issues"
+  },
+  "keywords": [
+    "jQuery",
+    "plugin",
+    "runner",
+    "stopwatch",
+    "countdown",
+    "countup",
+    "time",
+    "counting"
+  ],
+  "maintainers": [
+    {
+      "name": "Jyrki Laurila",
+      "url": "https://github.com/jylauril"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Jyrki Laurila",
+      "url": "https://github.com/jylauril"
+    }
+  ],
+  "author": {
+    "name": "Jyrki Laurila",
+    "url": "https://github.com/jylauril"
+  },
+  "directories": {
+    "lib": "lib",
+    "build": "build"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jylauril/jquery-runner/blob/master/LICENSE"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "grunt": ">=0.3.17",
+    "grunt-contrib": ">=0.3.0",
+    "grunt-coffee": "0.0.6"
+  }
+}
