@@ -18,6 +18,7 @@ class Runner
 
     running: false
     updating: false
+    finished: false
     interval: null
     total: 0
     lastTime: 0
@@ -43,8 +44,8 @@ class Runner
 
     format: (value) ->
         format = @settings.format
-        if $.isFunction(format) then format(value, formatTime, @settings.milliseconds)
-        else formatTime(value, @settings)
+        if $.isFunction(format) then format else formatTime
+        format(value, @settings)
 
     update: ->
         if not @updating
@@ -58,7 +59,9 @@ class Runner
             if countdown then @total -= delta else @total += delta
             if stopAt isnt null and (countdown and @total <= stopAt) or (not countdown and @total >= stopAt)
                 @total = stopAt
+                @finished = true
                 @stop()
+                @fire 'runnerFinish'
 
             @value @total
             @updating = false
@@ -71,7 +74,7 @@ class Runner
     start: ->
         if not @running
             @running = true
-            if not @startTime
+            if not @startTime or @finished
                 @reset()
             @lastTime = $.now()
             @interval = setInterval(=>
@@ -79,7 +82,7 @@ class Runner
                 return
             , @settings.interval)
 
-            @fire 'runnerStarted'
+            @fire 'runnerStart'
         return
 
     stop: ->
@@ -87,7 +90,7 @@ class Runner
             @running = false
             clearInterval @interval
             @update()
-            @fire 'runnerStopped'
+            @fire 'runnerStop'
         return
 
     toggle: ->
@@ -104,20 +107,24 @@ class Runner
         @fire 'runnerLap'
         return last
 
-    reset: ->
+    reset: (stop) ->
+        if stop then @stop()
         @startTime = @lapTime = @lastTime = $.now()
         @total = @settings.startAt
         @value @total
+        @finished = false
+        @fire 'runnerReset'
         return
 
     info: ->
         lap = @lastLap or 0
         {
             running: @running
-            time: @total,
-            formattedTime: @format(@total),
-            startTime: @startTime,
-            lapTime: lap,
-            formattedLapTime: @format(lap),
+            finished: @finished
+            time: @total
+            formattedTime: @format(@total)
+            startTime: @startTime
+            lapTime: lap
+            formattedLapTime: @format(lap)
             settings: @settings
         }

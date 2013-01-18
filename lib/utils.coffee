@@ -3,6 +3,7 @@ runners = {}
 _uid = 1
 uid = () -> 'runner' + _uid++
 formatTime = (time, settings) ->
+    settings = settings or {}
     steps = [3600000, 60000, 1000, 10]
     separator = ['', ':', ':', '.']
     prefix = ''

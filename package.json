@@ -1,7 +1,7 @@
 {
   "name": "jquery.runner",
   "title": "jQuery-runner",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A simple runner/stopwatch jQuery plugin for counting time up and down.",
   "homepage": "https://github.com/jylauril/jquery-runner",
   "main": "build/jquery.runner.js",

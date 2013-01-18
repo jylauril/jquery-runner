@@ -49,7 +49,7 @@ $('#runner').runner();
 
 
 
-`start` - Start the runner. If runner is not already initialized, it will first initialize and then start itself. Fires `runnerStarted` event.
+`start` - Start the runner. If runner is not already initialized, it will first initialize and then start itself. Fires `runnerStart` event.
 
 ```javascript
 $('#runner').runner('start');
@@ -57,7 +57,7 @@ $('#runner').runner('start');
 
 
 
-`stop` - Stop the runner. Fires `runnerStopped` event.
+`stop` - Stop the runner. Fires `runnerStop` event.
 
 ```javascript
 $('#runner').runner('stop');
@@ -81,10 +81,24 @@ $('#runner').runner('toggle');
 
 
 
-`reset` - Resets the time and settings to the original (initial) values. **Note that if the runner is running when invoking this method, this does not stop the runner, it just resets the time back to where it started and continues from there.**
+`reset` - Resets the time and settings to the original (initial) values. Fires `runnerReset` event. **Note that if the runner is running when invoking this method, this does not stop the runner, it just resets the time back to where it started and continues from there.**
 
 ```javascript
 $('#runner').runner('reset');
+```
+
+To stop the runner along with the reset, you can provide an additional boolean true parameter for the command.
+
+```javascript
+$('#runner').runner('reset', true);
+```
+
+
+
+`version` - Returns the current version string of the runner plugin
+
+```javascript
+$('#runner').runner('version');
 ```
 
 
@@ -108,7 +122,7 @@ You can alter the behavior by passing options object to the initialization.
 
 * `startAt` - (integer) Time in milliseconds from which the runner should start running. Defaults to 0. This works with both counting up and down, as long as the value is within the current run direction.
 
-* `stopAt` - (integer) Time in milliseconds at which the runner should stop running and invoke the `runnerStopped` event. Default is null (don't stop).
+* `stopAt` - (integer) Time in milliseconds at which the runner should stop running and invoke the `runnerStop` and `runnerFinish` events. Default is null (don't stop).
 
 * `milliseconds` - (boolean) If set to false, the default formatter will omit the milliseconds from displaying. Defaults to true (show milliseconds). **Note that if you use a custom formatter, this option will not affect the first value of that custom formatter function. This option, however, is passed in as third argument.**
 
@@ -119,14 +133,17 @@ You can alter the behavior by passing options object to the initialization.
 
 ## Events
 
-#### There are currently 3 events that gets fired:
+#### There are currently 5 events that gets fired:
 
-* `runnerStarted` - This event gets fired when the `start` method is invoked.
+* `runnerStart` - This event gets fired when the `start` method is invoked.
 
-* `runnerStopped` - This event gets fired when the `stop` method is invoked. Note that this event is also fired when the runner reaches the `stopAt` value.
+* `runnerStop` - This event gets fired when the `stop` method is invoked. Note that this event is also fired when the runner reaches the `stopAt` value.
 
 * `runnerLap` - This event gets fired when the `lap` method is invoked.
 
+* `runnerReset` - This event gets fired when the `reset` method is invoked.
+
+* `runnerFinish` - This event gets fired when the runner reaches the `stopAt` value.
 
 Each of these events will pass the result of the `info` method as an argument in the event call. See examples for usage.
 
@@ -184,15 +201,27 @@ $('#runner').runner({
     countdown: true,
     startAt: 12 * 60 * 1000,
     stopAt: 0
-}).bind('runnerStopped', function(ev, info) {
-    // check if we have reached the finish, or if the runner was just paused
-    if (info.time == 0) {
-        alert('The eggs are now hard-boiled!');
-    }
+}).on('runnerFinish', function(eventObject, info) {
+    alert('The eggs are now hard-boiled!');
 });
 ```
 
 ## Changelog
+
+### v2.1.0 - *2013-01-18* - Changes to the API and bug fixes
+* The custom format function no longer gets the inbuilt formatter as a second parameter. You can access the runner's inbuilt formatter through `$().runner.format()`.
+* The custom format function now gets the `settings` object as second parameter, which has the `milliseconds` -property that was given as 3rd parameter in the old version.
+* Added a way to stop the runner when calling `reset` method with a boolean true parameter.
+* Runner now fires a `runnerFinish` event after it reaches the `stopAt` value.
+* We now also fire a `runnerReset` event after the `reset` method is called.
+* Streamlined the other events to be more consistent.
+  * `runnerStarted` is now `runnerStart`.
+  * `runnerStopped` is now `runnerStop`.
+
+### v2.0.0 - *2013-01-17* - Rewrote the runner plugin with CoffeeScript
+* Backwards compatible with the 1.x release
+
+### v1.0.0 - *eons ago* - First version of the runner plugin
 
 ## Development
 

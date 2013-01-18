@@ -1,11 +1,11 @@
 /*!
- * jQuery-runner - v2.0.0 - 2013-01-17
+ * jQuery-runner - v2.1.0 - 2013-01-18
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2013 Jyrki Laurila <https://github.com/jylauril>
  */
 
 ;(function($) {
-var meta = { version: "2.0.0", name: "jQuery-runner" };
+var meta = { version: "2.1.0", name: "jQuery-runner" };
 
 var formatTime, pad, runners, uid, _uid;
 
@@ -23,6 +23,7 @@ uid = function() {
 
 formatTime = function(time, settings) {
   var i, len, ms, output, prefix, separator, step, steps, value, _i, _len;
+  settings = settings || {};
   steps = [3600000, 60000, 1000, 10];
   separator = ['', ':', ':', '.'];
   prefix = '';
@@ -73,6 +74,8 @@ Runner = (function() {
 
   Runner.prototype.updating = false;
 
+  Runner.prototype.finished = false;
+
   Runner.prototype.interval = null;
 
   Runner.prototype.total = 0;
@@ -107,10 +110,13 @@ Runner = (function() {
     var format;
     format = this.settings.format;
     if ($.isFunction(format)) {
-      return format(value, formatTime, this.settings.milliseconds);
+      format;
+
     } else {
-      return formatTime(value, this.settings);
+      formatTime;
+
     }
+    return format(value, this.settings);
   };
 
   Runner.prototype.update = function() {
@@ -130,7 +136,9 @@ Runner = (function() {
       }
       if (stopAt !== null && (countdown && this.total <= stopAt) || (!countdown && this.total >= stopAt)) {
         this.total = stopAt;
+        this.finished = true;
         this.stop();
+        this.fire('runnerFinish');
       }
       this.value(this.total);
       this.updating = false;
@@ -145,14 +153,14 @@ Runner = (function() {
     var _this = this;
     if (!this.running) {
       this.running = true;
-      if (!this.startTime) {
+      if (!this.startTime || this.finished) {
         this.reset();
       }
       this.lastTime = $.now();
       this.interval = setInterval(function() {
         _this.update();
       }, this.settings.interval);
-      this.fire('runnerStarted');
+      this.fire('runnerStart');
     }
   };
 
@@ -161,7 +169,7 @@ Runner = (function() {
       this.running = false;
       clearInterval(this.interval);
       this.update();
-      this.fire('runnerStopped');
+      this.fire('runnerStop');
     }
   };
 
@@ -186,10 +194,15 @@ Runner = (function() {
     return last;
   };
 
-  Runner.prototype.reset = function() {
+  Runner.prototype.reset = function(stop) {
+    if (stop) {
+      this.stop();
+    }
     this.startTime = this.lapTime = this.lastTime = $.now();
     this.total = this.settings.startAt;
     this.value(this.total);
+    this.finished = false;
+    this.fire('runnerReset');
   };
 
   Runner.prototype.info = function() {
@@ -197,6 +210,7 @@ Runner = (function() {
     lap = this.lastLap || 0;
     return {
       running: this.running,
+      finished: this.finished,
       time: this.total,
       formattedTime: this.format(this.total),
       startTime: this.startTime,
@@ -233,11 +247,15 @@ if ($) {
           return runner.info();
         }
         break;
+      case 'reset':
+        if (runner) {
+          runner.reset(options);
+        }
+        break;
       case 'start':
       case 'stop':
       case 'toggle':
       case 'lap':
-      case 'reset':
         if (runner) {
           runner[method]();
         }
@@ -249,6 +267,7 @@ if ($) {
     }
     return this;
   };
+  $.fn.runner.format = formatTime;
 } else {
   throw '[' + meta.name + '] jQuery library is required for this plugin to work';
 }
