@@ -116,26 +116,26 @@ You can alter the behavior by passing options object to the initialization.
 
 #### Here's a list of options you can use:
 
-* `autostart` - (boolean) If set to true, the runner will be started automatically after the initialization. Defaults to false.
+* `autostart` - (boolean) If set to true, the runner will be started automatically after the initialization. Defaults to false. If set to true, will trigger `runnerStart` event once the runner starts.
 
 * `countdown` - (boolean) If set to true, the time will run down instead of up (default). **Note that if you set this to true, you should also set `startAt` option, otherwise the time goes to negative.**
 
-* `startAt` - (integer) Time in milliseconds from which the runner should start running. Defaults to 0. This works with both counting up and down, as long as the value is within the current run direction.
+* `startAt` - (integer) Time in milliseconds from which the runner should start running. Defaults to 0. 
 
-* `stopAt` - (integer) Time in milliseconds at which the runner should stop running and invoke the `runnerStop` and `runnerFinish` events. Default is null (don't stop).
+* `stopAt` - (integer) Time in milliseconds at which the runner should stop running and invoke the `runnerStop` and `runnerFinish` events. Default is null (don't stop). This works with both counting up and down, as long as the value is within the current run direction.
 
-* `milliseconds` - (boolean) If set to false, the default formatter will omit the milliseconds from displaying. Defaults to true (show milliseconds). **Note that if you use a custom formatter, this option will not affect the first value of that custom formatter function. This option, however, is passed in as third argument.**
+* `milliseconds` - (boolean) If set to false, the default formatter will omit the milliseconds from displaying. Defaults to true (show milliseconds). **Note that if you use a custom formatter, this option will not affect the first value of that custom formatter function. This property, however, is passed in the object as second argument.**
 
-* `format` - (function) A custom format function to replace the default time formatting. By default this is not set. Takes in two arguments: first one is the current time value in milliseconds, the second one is the original formatter function reference, and the third one is the value of the `milliseconds` option. This function should return a string or a number.
+* `format` - (function) A custom format function to replace the default time formatting. By default this is not set. Takes in two arguments: first one is the current time value in milliseconds, second one is the settings object. This function should return a string or a number.
 
 * `interval` - (integer) Time in milliseconds how often we update the current time. Defaults to 20ms. **Note that if you use the `stopAt` option, the accuracy of the stop time will be affected by this. Also note that it is not recommended to use this option, unless you know what you're doing.**
 
 
 ## Events
 
-#### There are currently 5 events that gets fired:
+#### There are 5 events that gets fired:
 
-* `runnerStart` - This event gets fired when the `start` method is invoked.
+* `runnerStart` - This event gets fired when the `start` method is invoked, or if `autostart` option is set to true. Basically when ever the runner starts (duh!).
 
 * `runnerStop` - This event gets fired when the `stop` method is invoked. Note that this event is also fired when the runner reaches the `stopAt` value.
 
@@ -193,7 +193,6 @@ $('#runner').runner({
 });
 ```
 
-
 #### Initialize a count down runner that starts from 12 minutes and stops at 0, and alerts when the runner finishes:
 
 ```javascript
@@ -208,8 +207,11 @@ $('#runner').runner({
 
 ## Changelog
 
+### v2.1.1 - *2013-02-07* - Bug fixes
+* Fixed a couple of woopsies.
+
 ### v2.1.0 - *2013-01-18* - Changes to the API and bug fixes
-* The custom format function no longer gets the inbuilt formatter as a second parameter. You can access the runner's inbuilt formatter through `$().runner.format()`.
+* The custom format function no longer gets the inbuilt formatter as a second parameter. You can access the runner's inbuilt formatter through `$().runner.format`.
 * The custom format function now gets the `settings` object as second parameter, which has the `milliseconds` -property that was given as 3rd parameter in the old version.
 * Added a way to stop the runner when calling `reset` method with a boolean true parameter.
 * Runner now fires a `runnerFinish` event after it reaches the `stopAt` value.
