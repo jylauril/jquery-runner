@@ -1,11 +1,11 @@
 /*!
- * jQuery-runner - v2.1.0 - 2013-01-18
+ * jQuery-runner - v2.1.1 - 2013-02-07
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2013 Jyrki Laurila <https://github.com/jylauril>
  */
 
 ;(function($) {
-var meta = { version: "2.1.0", name: "jQuery-runner" };
+var meta = { version: "2.1.1", name: "jQuery-runner" };
 
 var formatTime, pad, runners, uid, _uid;
 
@@ -101,21 +101,17 @@ Runner = (function() {
   Runner.prototype.value = function(value) {
     var _this = this;
     this.items.each(function(item, element) {
+      var action;
       item = $(element);
-      item[(item.is('input') ? 'val' : 'text')](_this.format(value));
+      action = item.is('input') ? 'val' : 'text';
+      item[action](_this.format(value));
     });
   };
 
   Runner.prototype.format = function(value) {
     var format;
     format = this.settings.format;
-    if ($.isFunction(format)) {
-      format;
-
-    } else {
-      formatTime;
-
-    }
+    format = $.isFunction(format) ? format : formatTime;
     return format(value, this.settings);
   };
 

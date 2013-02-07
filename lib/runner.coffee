@@ -38,13 +38,14 @@ class Runner
     value: (value) ->
         @items.each (item, element) =>
             item = $(element)
-            item[(if item.is('input') then 'val' else 'text')](@format(value))
+            action = if item.is('input') then 'val' else 'text'
+            item[action](@format(value))
             return
         return
 
     format: (value) ->
         format = @settings.format
-        if $.isFunction(format) then format else formatTime
+        format = if $.isFunction(format) then format else formatTime
         format(value, @settings)
 
     update: ->
