@@ -58,7 +58,7 @@ class Runner
             delta = time - @lastTime
             @lastTime = time
             if countdown then @total -= delta else @total += delta
-            if stopAt isnt null and (countdown and @total <= stopAt) or (not countdown and @total >= stopAt)
+            if stopAt isnt null and ((countdown and @total <= stopAt) or (not countdown and @total >= stopAt))
                 @total = stopAt
                 @finished = true
                 @stop()

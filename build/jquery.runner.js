@@ -130,7 +130,7 @@ Runner = (function() {
       } else {
         this.total += delta;
       }
-      if (stopAt !== null && (countdown && this.total <= stopAt) || (!countdown && this.total >= stopAt)) {
+      if (stopAt !== null && ((countdown && this.total <= stopAt) || (!countdown && this.total >= stopAt))) {
         this.total = stopAt;
         this.finished = true;
         this.stop();
