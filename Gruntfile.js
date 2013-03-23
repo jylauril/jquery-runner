@@ -1,76 +1,72 @@
 /*global module:false*/
 module.exports = function(grunt) {
 
-    grunt.loadNpmTasks('grunt-contrib');
-    grunt.loadNpmTasks('grunt-coffee');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
 
     // Project configuration.
     grunt.initConfig({
 
-        pkg: '<json:package.json>',
+        pkg: grunt.file.readJSON('package.json'),
 
         meta: {
             banner: '/*!\n * <%= pkg.title %> - v<%= pkg.version %> - ' +
                 '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
                 ' * <%= pkg.homepage %>/\n' +
                 ' * Copyright (c) <%= grunt.template.today("yyyy") %> ' +
-                '<%= pkg.author.name %> <<%= pkg.author.url %>>\n */',
-
-            lib: {
-                intro: ';(function($) {\n' +
-                    'var meta = { ' +
-                        'version: "<%= pkg.version %>", ' +
-                        'name: "<%= pkg.title %>" ' +
-                    '};',
-                outro: '})(window.jQuery);'
-            }
+                '<%= pkg.author.name %> <<%= pkg.author.url %>>\n */\n'
         },
 
         clean: {
-            files: ['build/**/*']
+            options: {
+                force: true
+            },
+            build: ["build"]
         },
 
         coffee: {
             lib: {
-                src: '<%= pkg.directories.lib %>/**/*.coffee',
-                options: {
-                    preserve_dirs: true
+                 options: {
+                    join: true,
+                    bare: false
+                },
+                files: {
+                    '<%= pkg.directories.build %>/<%= pkg.name %>.js': [
+                        '<%= pkg.directories.lib %>/utils.coffee',
+                        '<%= pkg.directories.lib %>/runner.coffee',
+                        '<%= pkg.directories.lib %>/expose.coffee'
+                    ]
                 }
-            }
+            },
         },
 
         concat: {
-            lib: {
-                src: [
-                    '<banner:meta.banner>',
-                    '<banner:meta.lib.intro>',
-                    '<%= pkg.directories.lib %>/utils.js',
-                    '<%= pkg.directories.lib %>/runner.js',
-                    '<%= pkg.directories.lib %>/expose.js',
-                    '<banner:meta.lib.outro>'
-                ],
+            finish: {
+                options: {
+                    banner: '<%= meta.banner %>',
+                    process: true
+                },
+                src: ['<%= pkg.directories.build %>/<%= pkg.name %>.js'],
                 dest: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
             }
         },
 
-        min: {
+        uglify: {
+            options: {
+                banner: '<%= meta.banner %>'
+            },
             lib: {
-                src: ['<banner:meta.banner>', '<config:concat.lib.dest>'],
-                dest: '<%= pkg.directories.build %>/<%= pkg.name %>-min.js'
-            }
-        },
-
-        watch: {
-            coffee: {
-                files: '<config:coffee.lib.src>',
-                tasks: 'coffee'
+                files: {
+                    '<%= pkg.directories.build %>/<%= pkg.name %>-min.js': '<%= concat.finish.dest %>'
+                }
             }
         }
     });
 
-    grunt.registerTask('default', 'clean coffee concat');
-    grunt.registerTask('minify', 'min');
-    grunt.registerTask('release', 'default minify');
-    grunt.registerTask('lib', 'coffee:lib concat:lib');
-    grunt.registerTask('lib-min', 'concat:lib min:lib');
+    grunt.registerTask('default', ['clean', 'coffee', 'concat']);
+    grunt.registerTask('release', ['default', 'uglify']);
+    grunt.registerTask('lib', ['coffee', 'concat']);
 };
