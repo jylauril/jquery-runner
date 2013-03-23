@@ -12,7 +12,7 @@ if $
         id = @data('runner')
         runner = if id then runners[id] else false
         switch method
-            when 'init' then Runner(@, options, start)
+            when 'init' then new Runner(@, options, start)
             when 'info' then return runner.info() if runner
             when 'reset' then runner.reset(options) if runner
             when 'start', 'stop', 'toggle', 'lap' then runner[method]() if runner

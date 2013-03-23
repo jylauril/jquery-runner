@@ -1,7 +1,13 @@
-pad = (num) -> (if num < 10 then '0' else '') + num
+meta =
+    version: "<%= pkg.version %>"
+    name: "<%= pkg.title %>"
+
 runners = {}
 _uid = 1
+
+pad = (num) -> (if num < 10 then '0' else '') + num
 uid = () -> 'runner' + _uid++
+
 formatTime = (time, settings) ->
     settings = settings or {}
     steps = [3600000, 60000, 1000, 10]

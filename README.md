@@ -207,6 +207,9 @@ $('#runner').runner({
 
 ## Changelog
 
+### v2.1.2 - *2013-03-22* - Bug fix release
+* Fixed another woopsie.
+
 ### v2.1.1 - *2013-02-07* - Bug fixes
 * Fixed a couple of woopsies.
 

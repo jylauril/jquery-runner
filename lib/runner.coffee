@@ -4,8 +4,9 @@ class Runner
           return new Runner(items, options, start)
 
         @items = items
-        $.extend(@settings, options)
         id = @id = uid()
+        @settings = $.extend({}, @settings, options)
+
         runners[id] = @
         items.each (index, element) ->
             $(element).data 'runner', id
