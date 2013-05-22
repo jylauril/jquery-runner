@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.1.2 - 2013-03-22
+ * jQuery-runner - v2.1.3 - 2013-05-22
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2013 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -7,7 +7,7 @@
   var Runner, formatTime, meta, pad, runners, uid, _uid;
 
   meta = {
-    version: "2.1.2",
+    version: "2.1.3",
     name: "jQuery-runner"
   };
 
@@ -256,12 +256,16 @@
             runner.reset(options);
           }
           break;
+        case 'lap':
+          if (runner) {
+            return runner.lap();
+          }
+          break;
         case 'start':
         case 'stop':
         case 'toggle':
-        case 'lap':
           if (runner) {
-            runner[method]();
+            return runner[method]();
           }
           break;
         case 'version':
