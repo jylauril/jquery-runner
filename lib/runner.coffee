@@ -1,7 +1,6 @@
 class Runner
     constructor: (items, options, start) ->
-        if !(@ instanceof Runner)
-          return new Runner(items, options, start)
+        return new Runner(items, options, start) if !(@ instanceof Runner)
 
         @items = items
         id = @id = uid()
@@ -14,8 +13,7 @@ class Runner
 
         @value @settings.startAt
 
-        if start or @settings.autostart
-            @start()
+        @start() if start or @settings.autostart
 
     running: false
     updating: false
@@ -50,7 +48,7 @@ class Runner
         format(value, @settings)
 
     update: ->
-        if not @updating
+        unless @updating
             @updating = true
             settings = @settings
             time = $.now()
@@ -74,10 +72,9 @@ class Runner
         return
 
     start: ->
-        if not @running
+        unless @running
             @running = true
-            if not @startTime or @finished
-                @reset()
+            @reset() unless @startTime or @finished
             @lastTime = $.now()
             @interval = setInterval(=>
                 @update()
@@ -110,7 +107,7 @@ class Runner
         return last
 
     reset: (stop) ->
-        if stop then @stop()
+        @stop() if stop
         @startTime = @lapTime = @lastTime = $.now()
         @total = @settings.startAt
         @value @total

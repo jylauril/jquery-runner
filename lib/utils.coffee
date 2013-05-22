@@ -6,7 +6,7 @@ runners = {}
 _uid = 1
 
 pad = (num) -> (if num < 10 then '0' else '') + num
-uid = () -> 'runner' + _uid++
+uid = -> 'runner' + _uid++
 
 formatTime = (time, settings) ->
     settings = settings or {}

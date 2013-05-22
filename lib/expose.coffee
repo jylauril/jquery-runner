@@ -15,7 +15,8 @@ if $
             when 'init' then new Runner(@, options, start)
             when 'info' then return runner.info() if runner
             when 'reset' then runner.reset(options) if runner
-            when 'start', 'stop', 'toggle', 'lap' then runner[method]() if runner
+            when 'lap' then return runner.lap() if runner
+            when 'start', 'stop', 'toggle' then return runner[method]() if runner
             when 'version' then return meta.version
             else $.error '[' + meta.name + '] Method ' +  method + ' does not exist'
         return @
