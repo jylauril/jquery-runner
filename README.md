@@ -120,7 +120,7 @@ You can alter the behavior by passing options object to the initialization.
 
 * `countdown` - (boolean) If set to true, the time will run down instead of up (default). **Note that if you set this to true, you should also set `startAt` option, otherwise the time goes to negative.**
 
-* `startAt` - (integer) Time in milliseconds from which the runner should start running. Defaults to 0. 
+* `startAt` - (integer) Time in milliseconds from which the runner should start running. Defaults to 0.
 
 * `stopAt` - (integer) Time in milliseconds at which the runner should stop running and invoke the `runnerStop` and `runnerFinish` events. Default is null (don't stop). This works with both counting up and down, as long as the value is within the current run direction.
 
@@ -206,6 +206,10 @@ $('#runner').runner({
 ```
 
 ## Changelog
+
+### v2.1.3 - *2013-05-22* - Yet another bug fix release
+* I make a lot of bugs apparently
+* Runner lap wasn't returning the correct lap time, it's fixed now, I swear!
 
 ### v2.1.2 - *2013-03-22* - Bug fix release
 * Fixed another woopsie.
