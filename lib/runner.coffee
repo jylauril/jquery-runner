@@ -74,7 +74,7 @@ class Runner
     start: ->
         unless @running
             @running = true
-            @reset() unless @startTime or @finished
+            @reset() if not @startTime or @finished
             @lastTime = $.now()
             @interval = setInterval(=>
                 @update()
