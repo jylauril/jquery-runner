@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.1.3 - 2013-05-22
+ * jQuery-runner - v2.2.0 - 2013-05-24
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2013 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -7,7 +7,7 @@
   var Runner, formatTime, meta, pad, runners, uid, _uid;
 
   meta = {
-    version: "2.1.3",
+    version: "2.2.0",
     name: "jQuery-runner"
   };
 
@@ -40,6 +40,7 @@
     }
     for (i = _i = 0, _len = steps.length; _i < _len; i = ++_i) {
       step = steps[i];
+      value = 0;
       if (time >= step) {
         value = Math.floor(time / step);
         time -= value * step;
@@ -188,6 +189,9 @@
 
       last = this.lastTime;
       lap = last - this.lapTime;
+      if (this.settings.countdown) {
+        lap = -lap;
+      }
       if (this.running || lap) {
         this.lastLap = lap;
         this.lapTime = last;
@@ -198,10 +202,16 @@
     };
 
     Runner.prototype.reset = function(stop) {
+      var nowTime;
+
       if (stop) {
         this.stop();
       }
-      this.startTime = this.lapTime = this.lastTime = $.now();
+      nowTime = $.now();
+      if (typeof this.settings.startAt === 'number' && !this.settings.countdown) {
+        nowTime -= this.settings.startAt;
+      }
+      this.startTime = this.lapTime = this.lastTime = nowTime;
       this.total = this.settings.startAt;
       this.value(this.total);
       this.finished = false;
