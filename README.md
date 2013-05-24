@@ -65,7 +65,7 @@ $('#runner').runner('stop');
 
 
 
-`lap` - Take a lap time ("snapshot" of the current time) and return it as a formatted string. Fires `runnerLap` event.
+`lap` - Take a lap time (time between the current time and time from the last checkpoint) and return it as a formatted string. Fires `runnerLap` event.
 
 ```javascript
 alert("Current lap time: " + $('#runner').runner('lap'));
@@ -206,6 +206,11 @@ $('#runner').runner({
 ```
 
 ## Changelog
+
+### v2.2.0 - *2013-05-24* - Feature improvements and fixes
+* Fixed a couple of small underlying bugs
+* The first lap-time value now takes under consideration if the startAt time was something else than 0
+* Lap-time now returns negative value if we are counting down
 
 ### v2.1.3 - *2013-05-22* - Yet another bug fix release
 * I make a lot of bugs apparently
