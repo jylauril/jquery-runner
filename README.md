@@ -7,7 +7,7 @@ A simple runner/stopwatch jQuery plugin for counting time up and down.
 Include script *after* the jQuery library:
 
 ```html
-<script src="jquery.min.js" type="text/javascript"></script>
+<script src="jquery.js" type="text/javascript"></script>
 <script src="jquery.runner.js" type="text/javascript"></script>
 ```
 
