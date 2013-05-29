@@ -8,8 +8,15 @@ lib-cov
 *.gz
 
 .idea/
+.grunt/
 node_modules/
+components/
+Gruntfile.js
+
 lib/*.js
+
+spec/tests/*Spec.js
+spec/helpers/*Helper.js
 
 pids
 logs

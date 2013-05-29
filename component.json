@@ -1,0 +1,13 @@
+{
+    "name": "jQuery-runner",
+    "version": "2.2.0",
+    "main": "dist/jquery.runner.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/jylauril/jquery-runner.git"
+    },
+    "dependencies": {
+        "jquery": "~1.9.1",
+        "jasmine-sinon": "~0.1.0"
+    }
+}

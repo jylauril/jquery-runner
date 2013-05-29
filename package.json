@@ -44,6 +44,7 @@
   },
   "directories": {
     "lib": "lib",
+    "test": "spec",
     "build": "build"
   },
   "licenses": [
@@ -53,12 +54,13 @@
     }
   ],
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "grunt": ">=0.4.0",
     "grunt-contrib-uglify": ">=0.1.2",
     "grunt-contrib-concat": ">=0.1.3",
     "grunt-contrib-clean": ">=0.4.0",
     "grunt-contrib-copy": ">=0.4.0",
-    "grunt-contrib-coffee": ">=0.6.0"
+    "grunt-contrib-coffee": ">=0.6.0",
+    "grunt-contrib-jasmine": ">=0.4.2"
   }
 }
