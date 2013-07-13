@@ -75,6 +75,7 @@ module.exports = (grunt) ->
           specs: '<%= pkg.directories.test %>/tests/*Spec.js'
           helpers: [
             '<%= pkg.directories.test %>/helpers/*.js',
+            'components/jasmine-matchers/dist/jasmine-matchers.js',
             'components/jasmine-sinon/lib/sinon-1.0.0/sinon-1.0.0.js',
             'components/jasmine-sinon/lib/jasmine-sinon.js'
           ]
@@ -90,6 +91,7 @@ module.exports = (grunt) ->
           specs: '<%= pkg.directories.test %>/tests/*Spec.js'
           helpers: [
             '<%= pkg.directories.test %>/helpers/*.js',
+            'components/jasmine-matchers/dist/jasmine-matchers.js',
             'components/jasmine-sinon/lib/sinon-1.0.0/sinon-1.0.0.js',
             'components/jasmine-sinon/lib/jasmine-sinon.js'
           ]

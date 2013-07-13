@@ -8,6 +8,7 @@
     },
     "dependencies": {
         "jquery": "~1.9.1",
-        "jasmine-sinon": "~0.1.0"
+        "jasmine-sinon": "~0.1.0",
+        "jasmine-matchers": "git://github.com/JamieMason/Jasmine-Matchers.git"
     }
 }
