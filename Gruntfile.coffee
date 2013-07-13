@@ -2,10 +2,7 @@ module.exports = (grunt) ->
 
   pkg = grunt.file.readJSON('package.json')
 
-  # Load task dependencies
-  if pkg.devDependencies
-    for own task of pkg.devDependencies
-      grunt.loadNpmTasks(task) unless task is 'grunt'
+  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
 
   # Project configuration.
   grunt.initConfig
@@ -22,7 +19,7 @@ module.exports = (grunt) ->
     clean:
       options:
         force: true
-      runner: [pkg.directories.build]
+      runner: pkg.directories.build
 
     coffee:
       runner:
@@ -31,11 +28,7 @@ module.exports = (grunt) ->
           bare: false
 
         files:
-          '<%= pkg.directories.build %>/<%= pkg.name %>.js': [
-            '<%= pkg.directories.lib %>/utils.coffee'
-            '<%= pkg.directories.lib %>/runner.coffee'
-            '<%= pkg.directories.lib %>/expose.coffee'
-          ]
+          '<%= pkg.directories.build %>/<%= pkg.name %>.js': '<%= pkg.directories.build %>/<%= pkg.name %>.coffee'
 
       tests:
         expand: true
@@ -43,17 +36,32 @@ module.exports = (grunt) ->
           bare: true
         flatten: false
         cwd: '<%= pkg.directories.test %>/'
-        src: ['**/*.coffee']
+        src: '**/*.coffee'
         dest: '<%= pkg.directories.test %>/'
         ext: '.js'
 
     concat:
+      coffee:
+        src: [
+          '<%= pkg.directories.lib %>/utils.coffee'
+          '<%= pkg.directories.lib %>/runner.coffee'
+          '<%= pkg.directories.lib %>/expose.coffee'
+        ]
+        dest: '<%= pkg.directories.build %>/<%= pkg.name %>.coffee'
+
       runner:
         options:
           banner: '<%= meta.banner %>'
           process: true
-        src: ['<%= pkg.directories.build %>/<%= pkg.name %>.js']
+        src: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
         dest: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
+
+    compress:
+      runner:
+        options:
+          mode: 'gzip'
+        expand: true
+        src: '<%= pkg.directories.build %>/<%= pkg.name %>-min.js'
 
     uglify:
       options:
@@ -96,6 +104,7 @@ module.exports = (grunt) ->
 
   grunt.registerTask 'default', [
     'clean:runner'
+    'concat:coffee'
     'coffee:runner'
     'concat:runner'
   ]
@@ -103,6 +112,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'release', [
     'default'
     'uglify:runner'
+    'compress:runner'
   ]
 
   grunt.registerTask 'test', [
