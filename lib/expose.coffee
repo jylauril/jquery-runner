@@ -1,5 +1,5 @@
-if $
-  $.fn.runner = (method, options, start) ->
+if @$
+  @$.fn.runner = (method, options, start) ->
     if not method
       method = 'init'
 
@@ -19,6 +19,6 @@ if $
       when 'version' then return meta.version
       else $.error '[' + meta.name + '] Method ' +  method + ' does not exist'
     return @
-  $.fn.runner.format = formatTime
+  @$.fn.runner.format = formatTime
 else
   throw '[' + meta.name + '] jQuery library is required for this plugin to work'
