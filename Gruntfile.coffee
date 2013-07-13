@@ -56,13 +56,6 @@ module.exports = (grunt) ->
         src: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
         dest: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
 
-    compress:
-      runner:
-        options:
-          mode: 'gzip'
-        expand: true
-        src: '<%= pkg.directories.build %>/<%= pkg.name %>-min.js'
-
     uglify:
       options:
         banner: '<%= meta.banner %>'
@@ -112,7 +105,6 @@ module.exports = (grunt) ->
   grunt.registerTask 'release', [
     'default'
     'uglify:runner'
-    'compress:runner'
   ]
 
   grunt.registerTask 'test', [
