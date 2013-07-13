@@ -2,7 +2,19 @@
 
 A simple runner/stopwatch jQuery plugin for counting time up and down.
 
+### Project Status
+
+[![Dependency Status](https://david-dm.org/jylauril/jquery-runner.png)](https://david-dm.org/jylauril/jquery-runner)  [![devDependency Status](https://david-dm.org/jylauril/jquery-runner/dev-status.png)](https://david-dm.org/jylauril/jquery-runner#info=devDependencies)  [![Build Status](https://travis-ci.org/jylauril/jquery-runner.png?branch=master)](https://travis-ci.org/jylauril/jquery-runner)
+
 ## Installation
+
+Grab the latest version from the build/ folder.
+
+There's several different versions of the file, but you only need one.
+
+* In case you want to develop against the Runner, you can pick the non-minified version `jquery.runner.js`.
+* If you want to deploy Runner with your site/app, pick either `jquery.runner-min.js`.
+* Or if you develop with CoffeeScript and really want to know what's happening there, grab the `jquery.runner.coffee`. (Disclaimer: no support provided for the CoffeeScript file. If you don't know what it is, don't use it.)
 
 Include script *after* the jQuery library:
 
@@ -128,8 +140,6 @@ You can alter the behavior by passing options object to the initialization.
 
 * `format` - (function) A custom format function to replace the default time formatting. By default this is not set. Takes in two arguments: first one is the current time value in milliseconds, second one is the settings object. This function should return a string or a number.
 
-* `interval` - (integer) Time in milliseconds how often we update the current time. Defaults to 20ms. **Note that if you use the `stopAt` option, the accuracy of the stop time will be affected by this. Also note that it is not recommended to use this option, unless you know what you're doing.**
-
 
 ## Events
 
@@ -176,11 +186,8 @@ $('#runner').runner({
     countdown: true,
     startAt: 30000,
     milliseconds: false,
-    interval: 1000
 });
 ```
-
-*Note that the `interval` option is only set to demonstrate the possibility to change this value. In this example, it is not really needed to alter the interval, however, if you have dozens of runners like this on one page, it might be wise to make the update interval a bit slower so that it won't eat up all the CPU.*
 
 
 #### Initialize a normal count up runner with a custom formatter function that displays the time in minutes (with decimals):
@@ -206,6 +213,12 @@ $('#runner').runner({
 ```
 
 ## Changelog
+
+### v2.3.0 - *2013-07-14* - Improvements and fixes
+* Runner now utilizes requestAnimationFrame if applicable and falls back to setTimeout
+* Fixed a small bug with dependency checks
+* Removed ability to tweak the runner interval due to requestAnimationFrame change
+* Now also serving a gzipped version of the minified runner code in build folder, only 1.6KB!
 
 ### v2.2.0 - *2013-05-24* - Feature improvements and fixes
 * Fixed a couple of small underlying bugs
