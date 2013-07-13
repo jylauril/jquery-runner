@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   pkg = grunt.file.readJSON('package.json')
 
-  require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks)
+  require('matchdep').filterDev('grunt-contrib*').forEach(grunt.loadNpmTasks)
 
   # Project configuration.
   grunt.initConfig
