@@ -4,7 +4,7 @@
  * Copyright (c) 2013 Jyrki Laurila <https://github.com/jylauril>
  */
 (function() {
-  var Runner, formatTime, meta, pad, runners, uid, _uid;
+  var Runner, formatTime, meta, pad, runners, uid, _requestAnimationFrame, _uid;
 
   meta = {
     version: "2.3.0",
@@ -22,6 +22,12 @@
   uid = function() {
     return 'runner' + _uid++;
   };
+
+  _requestAnimationFrame = (function(win, raf) {
+    return win['webkitR' + raf] || win['r' + raf] || win['mozR' + raf] || win['msR' + raf] || function(fn) {
+      return setTimeout(fn, 30);
+    };
+  })(window, 'equestAnimationFrame');
 
   formatTime = function(time, settings) {
     var i, len, ms, output, prefix, separator, step, steps, value, _i, _len;
@@ -90,7 +96,6 @@
 
     Runner.prototype.settings = {
       autostart: false,
-      interval: 20,
       countdown: false,
       stopAt: null,
       startAt: 0,
@@ -146,16 +151,21 @@
     };
 
     Runner.prototype.start = function() {
-      var _this = this;
+      var step,
+        _this = this;
       if (!this.running) {
         this.running = true;
         if (!this.startTime || this.finished) {
           this.reset();
         }
         this.lastTime = $.now();
-        this.interval = setInterval(function() {
-          _this.update();
-        }, this.settings.interval);
+        step = function() {
+          if (_this.running) {
+            _this.update();
+            _requestAnimationFrame(step);
+          }
+        };
+        _requestAnimationFrame(step);
         this.fire('runnerStart');
       }
     };
@@ -163,7 +173,6 @@
     Runner.prototype.stop = function() {
       if (this.running) {
         this.running = false;
-        clearInterval(this.interval);
         this.update();
         this.fire('runnerStop');
       }
