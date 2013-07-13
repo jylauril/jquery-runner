@@ -26,7 +26,6 @@ class Runner
 
   settings:
     autostart: false
-    interval: 20
     countdown: false
     stopAt: null
     startAt: 0
@@ -75,18 +74,19 @@ class Runner
       @running = true
       @reset() if not @startTime or @finished
       @lastTime = $.now()
-      @interval = setInterval(=>
-        @update()
+      step = =>
+        if @running
+          @update()
+          _requestAnimationFrame(step)
         return
-      , @settings.interval)
 
+      _requestAnimationFrame(step)
       @fire 'runnerStart'
     return
 
   stop: ->
     if @running
       @running = false
-      clearInterval @interval
       @update()
       @fire 'runnerStop'
     return
