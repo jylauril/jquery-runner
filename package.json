@@ -7,7 +7,7 @@
   "main": "build/jquery.runner.js",
   "scripts": {
     "build": "grunt release",
-    "test": "grunt test"
+    "test": "grunt -v test-release"
   },
   "repository": {
     "type": "git",
