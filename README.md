@@ -218,7 +218,6 @@ $('#runner').runner({
 * Runner now utilizes requestAnimationFrame if applicable and falls back to setTimeout
 * Fixed a small bug with dependency checks
 * Removed ability to tweak the runner interval due to requestAnimationFrame change
-* Now also serving a gzipped version of the minified runner code in build folder, only 1.6KB!
 
 ### v2.2.0 - *2013-05-24* - Feature improvements and fixes
 * Fixed a couple of small underlying bugs
