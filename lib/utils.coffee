@@ -10,7 +10,7 @@ uid = -> 'runner' + _uid++
 
 _requestAnimationFrame = ((win, raf) ->
   win['webkitR' + raf] or win['r' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
-)(window, 'equestAnimationFrame')
+)(@, 'equestAnimationFrame')
 
 formatTime = (time, settings) ->
   settings = settings or {}
