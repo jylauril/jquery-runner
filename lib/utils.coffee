@@ -8,6 +8,10 @@ _uid = 1
 pad = (num) -> (if num < 10 then '0' else '') + num
 uid = -> 'runner' + _uid++
 
+_requestAnimationFrame = ((win, raf) ->
+  win['webkitR' + raf] or win['r' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
+)(window, 'equestAnimationFrame')
+
 formatTime = (time, settings) ->
   settings = settings or {}
   steps = [3600000, 60000, 1000, 10]
