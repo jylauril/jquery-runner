@@ -80,32 +80,12 @@ module.exports = (grunt) ->
             'components/jasmine-sinon/lib/jasmine-sinon.js'
           ]
 
-      release:
-        src: '<%= pkg.directories.build %>/<%= pkg.name %>-min.js'
-        options:
-          keepRunner: true
-          outfile: 'SpecRunner.html'
-          vendor: [
-            'components/jquery/jquery.js'
-          ]
-          specs: '<%= pkg.directories.test %>/tests/*Spec.js'
-          helpers: [
-            '<%= pkg.directories.test %>/helpers/*.js',
-            'components/jasmine-matchers/dist/jasmine-matchers.js',
-            'components/jasmine-sinon/lib/sinon-1.0.0/sinon-1.0.0.js',
-            'components/jasmine-sinon/lib/jasmine-sinon.js'
-          ]
-
 
   grunt.registerTask 'default', [
     'clean:runner'
     'concat:coffee'
     'coffee:runner'
     'concat:runner'
-  ]
-
-  grunt.registerTask 'release', [
-    'default'
     'uglify:runner'
   ]
 
@@ -113,10 +93,4 @@ module.exports = (grunt) ->
     'default'
     'coffee:tests'
     'jasmine:runner'
-  ]
-
-  grunt.registerTask 'test-release', [
-    'release'
-    'coffee:tests'
-    'jasmine:release'
   ]
