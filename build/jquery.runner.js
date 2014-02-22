@@ -27,7 +27,7 @@
     return win['webkitR' + raf] || win['r' + raf] || win['mozR' + raf] || win['msR' + raf] || function(fn) {
       return setTimeout(fn, 30);
     };
-  })(this, 'equestAnimationFrame');
+  })(this, 'requestAnimationFrame');
 
   formatTime = function(time, settings) {
     var i, len, ms, output, prefix, separator, step, steps, value, _i, _len;
