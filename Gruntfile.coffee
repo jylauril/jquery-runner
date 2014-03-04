@@ -70,7 +70,7 @@ module.exports = (grunt) ->
           keepRunner: true
           outfile: 'SpecRunner.html'
           vendor: [
-            'components/jquery/jquery.js'
+            'components/jquery/dist/jquery.js'
           ]
           specs: '<%= pkg.directories.test %>/tests/*Spec.js'
           helpers: [
