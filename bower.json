@@ -7,7 +7,9 @@
         "url": "git://github.com/jylauril/jquery-runner.git"
     },
     "dependencies": {
-        "jquery": "~1.9.1",
+        "jquery": "~1.9.1"
+    },
+    "devDependencies": {
         "jasmine-sinon": "~0.1.0",
         "jasmine-matchers": "git://github.com/JamieMason/Jasmine-Matchers.git"
     }
