@@ -2,7 +2,7 @@ module.exports = (grunt) ->
 
   pkg = grunt.file.readJSON('package.json')
 
-  require('matchdep').filterDev('grunt-contrib*').forEach(grunt.loadNpmTasks)
+  require('matchdep').filterDev(['grunt-*', '!grunt-cli']).forEach(grunt.loadNpmTasks)
 
   # Project configuration.
   grunt.initConfig
@@ -56,6 +56,17 @@ module.exports = (grunt) ->
         src: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
         dest: '<%= pkg.directories.build %>/<%= pkg.name %>.js'
 
+    coffeelint:
+      runner: '<%= pkg.directories.lib %>/*.coffee'
+      options:
+        line_endings: level: 'error'
+        no_backticks: level: 'error'
+        space_operators: level: 'error'
+        no_implicit_braces: level: 'error'
+        no_implicit_parens: level: 'error'
+        no_empty_param_list: level: 'error'
+        max_line_length: level: 'ignore'
+
     uglify:
       options:
         banner: '<%= meta.banner %>'
@@ -82,6 +93,7 @@ module.exports = (grunt) ->
 
 
   grunt.registerTask 'default', [
+    'coffeelint:runner'
     'clean:runner'
     'concat:coffee'
     'coffee:runner'
