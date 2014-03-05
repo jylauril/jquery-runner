@@ -1,6 +1,7 @@
-meta =
+meta = {
   version: "<%= pkg.version %>"
   name: "<%= pkg.title %>"
+}
 
 runners = {}
 _uid = 1

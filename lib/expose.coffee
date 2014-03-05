@@ -17,8 +17,8 @@ if @$
       when 'lap' then return runner.lap() if runner
       when 'start', 'stop', 'toggle' then return runner[method]() if runner
       when 'version' then return meta.version
-      else $.error '[' + meta.name + '] Method ' +  method + ' does not exist'
+      else $.error('[' + meta.name + '] Method ' +  method + ' does not exist')
     return @
   @$.fn.runner.format = formatTime
 else
-  throw '[' + meta.name + '] jQuery library is required for this plugin to work'
+  throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work')
