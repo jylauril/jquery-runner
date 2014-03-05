@@ -1,6 +1,7 @@
-meta =
+meta = {
   version: "<%= pkg.version %>"
   name: "<%= pkg.title %>"
+}
 
 runners = {}
 _uid = 1
@@ -46,11 +47,12 @@ class Runner
     @settings = $.extend({}, @settings, options)
 
     runners[id] = @
-    items.each (index, element) ->
-      $(element).data 'runner', id
+    items.each((index, element) ->
+      $(element).data('runner', id)
       return
+    )
 
-    @value @settings.startAt
+    @value(@settings.startAt)
     @start() if start or @settings.autostart
 
   running: false
@@ -63,20 +65,22 @@ class Runner
   lastLap: 0
   lapTime: 0
 
-  settings:
+  settings: {
     autostart: false
     countdown: false
     stopAt: null
     startAt: 0
     milliseconds: true
     format: null
+  }
 
   value: (value) ->
-    @items.each (item, element) =>
+    @items.each((item, element) =>
       item = $(element)
       action = if item.is('input') then 'val' else 'text'
       item[action](@format(value))
       return
+    )
     return
 
   format: (value) ->
@@ -98,14 +102,14 @@ class Runner
         @total = stopAt
         @finished = true
         @stop()
-        @fire 'runnerFinish'
+        @fire('runnerFinish')
 
-      @value @total
+      @value(@total)
       @updating = false
     return
 
   fire: (event) ->
-    @items.trigger event, @info()
+    @items.trigger(event, @info())
     return
 
   start: ->
@@ -120,14 +124,14 @@ class Runner
         return
 
       _requestAnimationFrame(step)
-      @fire 'runnerStart'
+      @fire('runnerStart')
     return
 
   stop: ->
     if @running
       @running = false
       @update()
-      @fire 'runnerStop'
+      @fire('runnerStop')
     return
 
   toggle: ->
@@ -145,8 +149,8 @@ class Runner
       @lastLap = lap
       @lapTime = last
 
-    last = @format @lastLap
-    @fire 'runnerLap'
+    last = @format(@lastLap)
+    @fire('runnerLap')
 
     return last
 
@@ -159,9 +163,9 @@ class Runner
 
     @startTime = @lapTime = @lastTime = nowTime
     @total = @settings.startAt
-    @value @total
+    @value(@total)
     @finished = false
-    @fire 'runnerReset'
+    @fire('runnerReset')
     return
 
   info: ->
@@ -196,8 +200,8 @@ if @$
       when 'lap' then return runner.lap() if runner
       when 'start', 'stop', 'toggle' then return runner[method]() if runner
       when 'version' then return meta.version
-      else $.error '[' + meta.name + '] Method ' +  method + ' does not exist'
+      else $.error('[' + meta.name + '] Method ' +  method + ' does not exist')
     return @
   @$.fn.runner.format = formatTime
 else
-  throw '[' + meta.name + '] jQuery library is required for this plugin to work'
+  throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work')

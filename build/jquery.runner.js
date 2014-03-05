@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.3.0 - 2014-01-13
+ * jQuery-runner - v2.3.0 - 2014-03-04
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2014 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -104,13 +104,14 @@
     };
 
     Runner.prototype.value = function(value) {
-      var _this = this;
-      this.items.each(function(item, element) {
-        var action;
-        item = $(element);
-        action = item.is('input') ? 'val' : 'text';
-        item[action](_this.format(value));
-      });
+      this.items.each((function(_this) {
+        return function(item, element) {
+          var action;
+          item = $(element);
+          action = item.is('input') ? 'val' : 'text';
+          item[action](_this.format(value));
+        };
+      })(this));
     };
 
     Runner.prototype.format = function(value) {
@@ -151,20 +152,21 @@
     };
 
     Runner.prototype.start = function() {
-      var step,
-        _this = this;
+      var step;
       if (!this.running) {
         this.running = true;
         if (!this.startTime || this.finished) {
           this.reset();
         }
         this.lastTime = $.now();
-        step = function() {
-          if (_this.running) {
-            _this.update();
-            _requestAnimationFrame(step);
-          }
-        };
+        step = (function(_this) {
+          return function() {
+            if (_this.running) {
+              _this.update();
+              _requestAnimationFrame(step);
+            }
+          };
+        })(this);
         _requestAnimationFrame(step);
         this.fire('runnerStart');
       }
@@ -285,7 +287,7 @@
     };
     this.$.fn.runner.format = formatTime;
   } else {
-    throw '[' + meta.name + '] jQuery library is required for this plugin to work';
+    throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work');
   }
 
 }).call(this);
