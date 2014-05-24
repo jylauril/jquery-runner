@@ -1,20 +1,30 @@
+# ## Helper methods
+
+# Meta object that gets prepopulated with version info, etc.
 meta = {
   version: "<%= pkg.version %>"
   name: "<%= pkg.title %>"
 }
 
+# A place to store the runners
 runners = {}
-_uid = 1
 
+# Pad numbers so they are always two characters
 pad = (num) -> (if num < 10 then '0' else '') + num
+
+_uid = 1
+# Helper method to generate a unique identifier
 uid = -> 'runner' + _uid++
 
+# Resolve a browser specific method for `requestAnimationFrame`
 _requestAnimationFrame = ((win, raf) ->
   win['webkitR' + raf] or win['r' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
 )(@, 'equestAnimationFrame')
 
+# Helper method to generate a time string from a timestamp
 formatTime = (time, settings) ->
   settings = settings or {}
+  # Steps: hours, minutes, seconds, milliseconds
   steps = [3600000, 60000, 1000, 10]
   separator = ['', ':', ':', '.']
   prefix = ''
@@ -23,12 +33,15 @@ formatTime = (time, settings) ->
   len = steps.length
   value = 0
 
+  # Check if we are in negative values and mark the prefix
   if time < 0
     time = Math.abs(time)
     prefix = '-'
 
+  # Go through the steps and generate time string
   for step, i in steps
     value = 0
+    # Check if we have enough time left for the next step
     if time >= step
       value = Math.floor(time / step)
       time -= value * step
