@@ -1,10 +1,10 @@
 /*!
- * jQuery-runner - v2.3.0 - 2014-03-04
+ * jQuery-runner - v2.3.0 - 2014-05-24
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2014 Jyrki Laurila <https://github.com/jylauril>
  */
 (function() {
-  var Runner, formatTime, meta, pad, runners, uid, _requestAnimationFrame, _uid;
+  var Runner, formatTime, meta, pad, runners, uid, _$, _requestAnimationFrame, _uid;
 
   meta = {
     version: "2.3.0",
@@ -13,11 +13,11 @@
 
   runners = {};
 
-  _uid = 1;
-
   pad = function(num) {
     return (num < 10 ? '0' : '') + num;
   };
+
+  _uid = 1;
 
   uid = function() {
     return 'runner' + _uid++;
@@ -239,8 +239,10 @@
 
   })();
 
-  if (this.$) {
-    this.$.fn.runner = function(method, options, start) {
+  _$ = this.jQuery || this.Zepto || this.$;
+
+  if (_$) {
+    _$.fn.runner = function(method, options, start) {
       var id, runner;
       if (!method) {
         method = 'init';
@@ -281,11 +283,11 @@
         case 'version':
           return meta.version;
         default:
-          $.error('[' + meta.name + '] Method ' + method + ' does not exist');
+          _$.error('[' + meta.name + '] Method ' + method + ' does not exist');
       }
       return this;
     };
-    this.$.fn.runner.format = formatTime;
+    _$.fn.runner.format = formatTime;
   } else {
     throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work');
   }
