@@ -214,6 +214,9 @@ $('#runner').runner({
 
 ## Changelog
 
+### v2.3.1 - *2014-05-24* - Improvements and fixes
+* Fixed a bug when running jQuery in noConflict mode.
+
 ### v2.3.0 - *2013-07-14* - Improvements and fixes
 * Runner now utilizes requestAnimationFrame if applicable and falls back to setTimeout
 * Fixed a small bug with dependency checks
