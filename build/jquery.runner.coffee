@@ -1,11 +1,11 @@
-#     jQuery-runner - v2.3.0 (2014-05-24)
+#     jQuery-runner - v2.3.1 (2014-05-24)
 #     https://github.com/jylauril/jquery-runner/
 #     (c) 2014 Jyrki Laurila <https://github.com/jylauril>
 # ## Helper methods
 
 # Meta object that gets prepopulated with version info, etc.
 meta = {
-  version: "2.3.0"
+  version: "2.3.1"
   name: "jQuery-runner"
 }
 

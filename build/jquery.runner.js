@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.3.0 - 2014-05-24
+ * jQuery-runner - v2.3.1 - 2014-05-24
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2014 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -7,7 +7,7 @@
   var Runner, formatTime, meta, pad, runners, uid, _$, _requestAnimationFrame, _uid;
 
   meta = {
-    version: "2.3.0",
+    version: "2.3.1",
     name: "jQuery-runner"
   };
 
