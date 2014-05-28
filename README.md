@@ -214,6 +214,9 @@ $('#runner').runner({
 
 ## Changelog
 
+### v2.3.2 - *2014-05-28* - Bug fix
+* Another jQuery noConflict related fix. Hopefully the last.
+
 ### v2.3.1 - *2014-05-24* - Improvements and fixes
 * Fixed a bug when running jQuery in noConflict mode.
 
