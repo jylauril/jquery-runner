@@ -6,6 +6,12 @@ meta = {
   name: "<%= pkg.title %>"
 }
 
+_$ = @jQuery or @Zepto or @$
+
+unless _$ and _$.fn
+  # Require jQuery or any other jQuery-like library
+  throw new Error('[' + meta.name + '] jQuery or jQuery-like library is required for this plugin to work')
+
 # A place to store the runners
 runners = {}
 

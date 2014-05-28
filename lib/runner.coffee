@@ -7,13 +7,13 @@ class Runner
 
     @items = items
     id = @id = uid()
-    @settings = $.extend({}, @settings, options)
+    @settings = _$.extend({}, @settings, options)
 
     # Store reference to this instance
     runners[id] = @
     items.each((index, element) ->
       # Also save reference to each element
-      $(element).data('runner', id)
+      _$(element).data('runner', id)
       return
     )
 
@@ -48,7 +48,7 @@ class Runner
   # Method to update current time value to runner's elements
   value: (value) ->
     @items.each((item, element) =>
-      item = $(element)
+      item = _$(element)
       # If the element is an input, we need to use `val` instead of `text`
       action = if item.is('input') then 'val' else 'text'
       item[action](@format(value))
@@ -60,7 +60,7 @@ class Runner
   format: (value) ->
     format = @settings.format
     # If custom format method is defined, use it, otherwise use the default formatter
-    format = if $.isFunction(format) then format else formatTime
+    format = if _$.isFunction(format) then format else formatTime
     format(value, @settings)
 
   # Method to update runner cycle
@@ -69,7 +69,7 @@ class Runner
     unless @updating
       @updating = true
       settings = @settings
-      time = $.now()
+      time = _$.now()
       stopAt = settings.stopAt
       countdown = settings.countdown
       delta = time - @lastTime
@@ -100,7 +100,7 @@ class Runner
       @running = true
       # Reset the current time value if we were not paused
       @reset() if not @startTime or @finished
-      @lastTime = $.now()
+      @lastTime = _$.now()
       step = =>
         if @running
           # Update cycle if we are still running
@@ -149,7 +149,7 @@ class Runner
     # If we passed in a boolean true, stop the runner
     @stop() if stop
 
-    nowTime = $.now()
+    nowTime = _$.now()
     if typeof @settings.startAt is 'number' and not @settings.countdown
       nowTime -= @settings.startAt
 
