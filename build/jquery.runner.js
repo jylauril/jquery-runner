@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.3.1 - 2014-05-24
+ * jQuery-runner - v2.3.2 - 2014-05-28
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2014 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -7,9 +7,15 @@
   var Runner, formatTime, meta, pad, runners, uid, _$, _requestAnimationFrame, _uid;
 
   meta = {
-    version: "2.3.1",
+    version: "2.3.2",
     name: "jQuery-runner"
   };
+
+  _$ = this.jQuery || this.Zepto || this.$;
+
+  if (!(_$ && _$.fn)) {
+    throw new Error('[' + meta.name + '] jQuery or jQuery-like library is required for this plugin to work');
+  }
 
   runners = {};
 
@@ -65,10 +71,10 @@
       }
       this.items = items;
       id = this.id = uid();
-      this.settings = $.extend({}, this.settings, options);
+      this.settings = _$.extend({}, this.settings, options);
       runners[id] = this;
       items.each(function(index, element) {
-        $(element).data('runner', id);
+        _$(element).data('runner', id);
       });
       this.value(this.settings.startAt);
       if (start || this.settings.autostart) {
@@ -107,7 +113,7 @@
       this.items.each((function(_this) {
         return function(item, element) {
           var action;
-          item = $(element);
+          item = _$(element);
           action = item.is('input') ? 'val' : 'text';
           item[action](_this.format(value));
         };
@@ -117,7 +123,7 @@
     Runner.prototype.format = function(value) {
       var format;
       format = this.settings.format;
-      format = $.isFunction(format) ? format : formatTime;
+      format = _$.isFunction(format) ? format : formatTime;
       return format(value, this.settings);
     };
 
@@ -126,7 +132,7 @@
       if (!this.updating) {
         this.updating = true;
         settings = this.settings;
-        time = $.now();
+        time = _$.now();
         stopAt = settings.stopAt;
         countdown = settings.countdown;
         delta = time - this.lastTime;
@@ -158,7 +164,7 @@
         if (!this.startTime || this.finished) {
           this.reset();
         }
-        this.lastTime = $.now();
+        this.lastTime = _$.now();
         step = (function(_this) {
           return function() {
             if (_this.running) {
@@ -209,7 +215,7 @@
       if (stop) {
         this.stop();
       }
-      nowTime = $.now();
+      nowTime = _$.now();
       if (typeof this.settings.startAt === 'number' && !this.settings.countdown) {
         nowTime -= this.settings.startAt;
       }
@@ -239,57 +245,52 @@
 
   })();
 
-  _$ = this.jQuery || this.Zepto || this.$;
+  _$.fn.runner = function(method, options, start) {
+    var id, runner;
+    if (!method) {
+      method = 'init';
+    }
+    if (typeof method === 'object') {
+      start = options;
+      options = method;
+      method = 'init';
+    }
+    id = this.data('runner');
+    runner = id ? runners[id] : false;
+    switch (method) {
+      case 'init':
+        new Runner(this, options, start);
+        break;
+      case 'info':
+        if (runner) {
+          return runner.info();
+        }
+        break;
+      case 'reset':
+        if (runner) {
+          runner.reset(options);
+        }
+        break;
+      case 'lap':
+        if (runner) {
+          return runner.lap();
+        }
+        break;
+      case 'start':
+      case 'stop':
+      case 'toggle':
+        if (runner) {
+          return runner[method]();
+        }
+        break;
+      case 'version':
+        return meta.version;
+      default:
+        _$.error('[' + meta.name + '] Method ' + method + ' does not exist');
+    }
+    return this;
+  };
 
-  if (_$) {
-    _$.fn.runner = function(method, options, start) {
-      var id, runner;
-      if (!method) {
-        method = 'init';
-      }
-      if (typeof method === 'object') {
-        start = options;
-        options = method;
-        method = 'init';
-      }
-      id = this.data('runner');
-      runner = id ? runners[id] : false;
-      switch (method) {
-        case 'init':
-          new Runner(this, options, start);
-          break;
-        case 'info':
-          if (runner) {
-            return runner.info();
-          }
-          break;
-        case 'reset':
-          if (runner) {
-            runner.reset(options);
-          }
-          break;
-        case 'lap':
-          if (runner) {
-            return runner.lap();
-          }
-          break;
-        case 'start':
-        case 'stop':
-        case 'toggle':
-          if (runner) {
-            return runner[method]();
-          }
-          break;
-        case 'version':
-          return meta.version;
-        default:
-          _$.error('[' + meta.name + '] Method ' + method + ' does not exist');
-      }
-      return this;
-    };
-    _$.fn.runner.format = formatTime;
-  } else {
-    throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work');
-  }
+  _$.fn.runner.format = formatTime;
 
 }).call(this);

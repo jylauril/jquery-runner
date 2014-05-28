@@ -1,13 +1,19 @@
-#     jQuery-runner - v2.3.1 (2014-05-24)
+#     jQuery-runner - v2.3.2 (2014-05-28)
 #     https://github.com/jylauril/jquery-runner/
 #     (c) 2014 Jyrki Laurila <https://github.com/jylauril>
 # ## Helper methods
 
 # Meta object that gets prepopulated with version info, etc.
 meta = {
-  version: "2.3.1"
+  version: "2.3.2"
   name: "jQuery-runner"
 }
+
+_$ = @jQuery or @Zepto or @$
+
+unless _$ and _$.fn
+  # Require jQuery or any other jQuery-like library
+  throw new Error('[' + meta.name + '] jQuery or jQuery-like library is required for this plugin to work')
 
 # A place to store the runners
 runners = {}
@@ -63,13 +69,13 @@ class Runner
 
     @items = items
     id = @id = uid()
-    @settings = $.extend({}, @settings, options)
+    @settings = _$.extend({}, @settings, options)
 
     # Store reference to this instance
     runners[id] = @
     items.each((index, element) ->
       # Also save reference to each element
-      $(element).data('runner', id)
+      _$(element).data('runner', id)
       return
     )
 
@@ -104,7 +110,7 @@ class Runner
   # Method to update current time value to runner's elements
   value: (value) ->
     @items.each((item, element) =>
-      item = $(element)
+      item = _$(element)
       # If the element is an input, we need to use `val` instead of `text`
       action = if item.is('input') then 'val' else 'text'
       item[action](@format(value))
@@ -116,7 +122,7 @@ class Runner
   format: (value) ->
     format = @settings.format
     # If custom format method is defined, use it, otherwise use the default formatter
-    format = if $.isFunction(format) then format else formatTime
+    format = if _$.isFunction(format) then format else formatTime
     format(value, @settings)
 
   # Method to update runner cycle
@@ -125,7 +131,7 @@ class Runner
     unless @updating
       @updating = true
       settings = @settings
-      time = $.now()
+      time = _$.now()
       stopAt = settings.stopAt
       countdown = settings.countdown
       delta = time - @lastTime
@@ -156,7 +162,7 @@ class Runner
       @running = true
       # Reset the current time value if we were not paused
       @reset() if not @startTime or @finished
-      @lastTime = $.now()
+      @lastTime = _$.now()
       step = =>
         if @running
           # Update cycle if we are still running
@@ -205,7 +211,7 @@ class Runner
     # If we passed in a boolean true, stop the runner
     @stop() if stop
 
-    nowTime = $.now()
+    nowTime = _$.now()
     if typeof @settings.startAt is 'number' and not @settings.countdown
       nowTime -= @settings.startAt
 
@@ -231,35 +237,30 @@ class Runner
       settings: @settings
     }
 
-_$ = @jQuery or @Zepto or @$
-if _$
-  # Expose the runner as jQuery method
-  _$.fn.runner = (method, options, start) ->
-    if not method
-      method = 'init'
+# Expose the runner as jQuery method
+_$.fn.runner = (method, options, start) ->
+  if not method
+    method = 'init'
 
-    # Normalize params
-    if typeof method is 'object'
-      start = options
-      options = method
-      method = 'init'
+  # Normalize params
+  if typeof method is 'object'
+    start = options
+    options = method
+    method = 'init'
 
-    # Check if runner is already defined for this element
-    id = @data('runner')
-    runner = if id then runners[id] else false
+  # Check if runner is already defined for this element
+  id = @data('runner')
+  runner = if id then runners[id] else false
 
-    switch method
-      when 'init' then new Runner(@, options, start)
-      when 'info' then return runner.info() if runner
-      when 'reset' then runner.reset(options) if runner
-      when 'lap' then return runner.lap() if runner
-      when 'start', 'stop', 'toggle' then return runner[method]() if runner
-      when 'version' then return meta.version
-      else _$.error('[' + meta.name + '] Method ' +  method + ' does not exist')
-    return @
+  switch method
+    when 'init' then new Runner(@, options, start)
+    when 'info' then return runner.info() if runner
+    when 'reset' then runner.reset(options) if runner
+    when 'lap' then return runner.lap() if runner
+    when 'start', 'stop', 'toggle' then return runner[method]() if runner
+    when 'version' then return meta.version
+    else _$.error('[' + meta.name + '] Method ' +  method + ' does not exist')
+  return @
 
-  # Expose the default format method
-  _$.fn.runner.format = formatTime
-else
-  # Require jQuery
-  throw new Error('[' + meta.name + '] jQuery library is required for this plugin to work')
+# Expose the default format method
+_$.fn.runner.format = formatTime
