@@ -24,7 +24,7 @@ uid = -> 'runner' + _uid++
 
 # Resolve a browser specific method for `requestAnimationFrame`
 _requestAnimationFrame = ((win, raf) ->
-  win['webkitR' + raf] or win['r' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
+  win['r' + raf] or win['webkitR' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
 )(@, 'equestAnimationFrame')
 
 # Helper method to generate a time string from a timestamp
