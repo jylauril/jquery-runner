@@ -214,6 +214,9 @@ $('#runner').runner({
 
 ## Changelog
 
+### v2.3.3 - *2014-08-06* - Small improvement
+* Made the non-vendor specific requestAnimationFrame the primary one to suppress deprecation error messages.
+
 ### v2.3.2 - *2014-05-28* - Bug fix
 * Another jQuery noConflict related fix. Hopefully the last.
 
