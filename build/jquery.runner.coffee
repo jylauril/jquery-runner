@@ -1,11 +1,11 @@
-#     jQuery-runner - v2.3.2 (2014-05-28)
+#     jQuery-runner - v2.3.3 (2014-08-06)
 #     https://github.com/jylauril/jquery-runner/
 #     (c) 2014 Jyrki Laurila <https://github.com/jylauril>
 # ## Helper methods
 
 # Meta object that gets prepopulated with version info, etc.
 meta = {
-  version: "2.3.2"
+  version: "2.3.3"
   name: "jQuery-runner"
 }
 
@@ -27,7 +27,7 @@ uid = -> 'runner' + _uid++
 
 # Resolve a browser specific method for `requestAnimationFrame`
 _requestAnimationFrame = ((win, raf) ->
-  win['webkitR' + raf] or win['r' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
+  win['r' + raf] or win['webkitR' + raf] or win['mozR' + raf] or win['msR' + raf] or (fn) -> setTimeout(fn, 30)
 )(@, 'equestAnimationFrame')
 
 # Helper method to generate a time string from a timestamp

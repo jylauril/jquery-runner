@@ -1,5 +1,5 @@
 /*!
- * jQuery-runner - v2.3.2 - 2014-05-28
+ * jQuery-runner - v2.3.3 - 2014-08-06
  * https://github.com/jylauril/jquery-runner/
  * Copyright (c) 2014 Jyrki Laurila <https://github.com/jylauril>
  */
@@ -7,7 +7,7 @@
   var Runner, formatTime, meta, pad, runners, uid, _$, _requestAnimationFrame, _uid;
 
   meta = {
-    version: "2.3.2",
+    version: "2.3.3",
     name: "jQuery-runner"
   };
 
@@ -30,7 +30,7 @@
   };
 
   _requestAnimationFrame = (function(win, raf) {
-    return win['webkitR' + raf] || win['r' + raf] || win['mozR' + raf] || win['msR' + raf] || function(fn) {
+    return win['r' + raf] || win['webkitR' + raf] || win['mozR' + raf] || win['msR' + raf] || function(fn) {
       return setTimeout(fn, 30);
     };
   })(this, 'equestAnimationFrame');
