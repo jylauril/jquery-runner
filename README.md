@@ -120,7 +120,19 @@ $('#runner').runner('version');
 ```javascript
 $('#runner').runner('info');
 ```
+The following methods can be called upon this object:
+* `running` - Check if the runner is running.
+* `finished` - Check if the runner has finished running.
+* `time` - Returns amount of time elapsed, in milliseconds.
+* `formattedTime` - Returns time elapsed as a formatted string.
+* `startTime` - Returns absolute runner starting time.
+* `lapTime` - Returns lap time.
+* `formattedLaptime` - Returns lap time as a formatted string.
 
+e.g:
+```javascript
+$('#runner').runner('info').formattedTime;
+```
 
 ## Options
 
