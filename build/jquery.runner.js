@@ -106,7 +106,8 @@
       stopAt: null,
       startAt: 0,
       milliseconds: true,
-      format: null
+      format: null,
+      encodeHtml: true
     };
 
     Runner.prototype.value = function(value) {
@@ -114,7 +115,7 @@
         return function(item, element) {
           var action;
           item = _$(element);
-          action = item.is('input') ? 'val' : 'text';
+          action = item.is('input') ? 'val' : (_this.options.encodeHtml ? 'text' : 'html');
           item[action](_this.format(value));
         };
       })(this));
